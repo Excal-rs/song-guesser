@@ -2,6 +2,18 @@ import bcrypt
 import csv
 import os
 
+with open("Accounts.csv") as accountbase:
+    reader = csv.DictReader(accountbase)
+    usernames = []
+
+    for row in reader:
+        usernames.append(row["Username"])
+
+    accountbase.close()
+        # creates a list of all usernames from the csv file
+
+
+
 class UserDetail:
     def __init__(self, username, password, score):
 
@@ -20,15 +32,6 @@ class UserDetail:
         accountbase.close()
 
 
-with open("Accounts.csv") as accountbase:
-    reader = csv.DictReader(accountbase)
-    usernames = []
-
-    for row in reader:
-        usernames.append(row["Username"])
-
-    accountbase.close()
-        # creates a list of all usernames from the csv file
 
 
 # Subprogram to create a new user if needed
@@ -72,10 +75,20 @@ def Login(username, password):
 
     accountbase = csv.reader(open("Accounts.csv", "r"))
     for row in accountbase:
-        if username == row[0] and (bcrypt.checkpw(password, (row[1]).encode("utf-8"))):
-            print("You have logged in succesfully! \n ")
-
-
+        if username == row[0] and bcrypt.checkpw(password, (row[1]).encode("utf-8")):
+            print("You have succesfully logged in! \n")
+        elif username == row [0] and (bcrypt.checkpw(password, (row[1]).encode("utf-8"))) == False:
+            print("Incorrect username or password! Please try again! \n")
+            Uname = str(input("Please enter account username: "))
+            Passwd = str(input("Please enter account password: ")).encode("utf-8")
+            Login(Uname, Passwd)
+        elif username not in usernames:
+            print("That user does not exist! Do you want to create a new user?")
+            if input() in ['y',"yes"]:
+                createUser()
+            else:
+                print("OK, Let's try again!")
+                Login()
 
 
 
@@ -88,7 +101,6 @@ if choice in ['n', 'no']:
 
 
 
-
 Uname = str(input("Please enter account username: "))
 Passwd = str(input("Please enter account password: ")).encode("utf-8")
 
@@ -96,7 +108,11 @@ Login(Uname, Passwd)
 score = GetRow(Uname)[2]
 
 
-#Once you have logged in you need to get you're score!
+#os.system('cls')
+
+print(f"Welcome to the song guesser game! Your score is currectly {score}!"
+      f" Lets try get it higher so u can be on the leaderboard")
+
 
 
 
