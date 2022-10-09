@@ -137,21 +137,24 @@ def songguess(score):
 
             for x in range(2):
                 guess = str(input(f"What song is {songinitial} - by {songbase.artist[i]}: "))
-
-                if guess == "end now" and input("Are you sure? y/n") in ["yes", "y"]:
+                if x == 1 and guess != song:
+                    score = score - 1
+                    print(f"You have lost one point! Your score is now: {score}\n")
+                    break
+                
+                elif guess == "end now" and input("Are you sure? y/n") in ["yes", "y"]:
                     break
 
                 elif guess == song:
                     score += 1
                     print(f"That is correct \nYour score is now: {score} \n")
                     break
+                
                 elif guess != song:
-                    print("incorrect")
+                    print("incorrect, one more try!")
+                    continue
 
-                    if x == 2:
-                        score -= 1
-                        print(f"You have lost one point! Your score is now: {score}\n")
-                        break
+                
 
         continue
     return score
