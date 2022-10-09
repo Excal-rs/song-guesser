@@ -21,7 +21,7 @@ class UserDetail:
                            "score": [self.score]})
 
         #writes username and hashed password to the csv file
-        df.to_csv("Accounts.csv", mode="a", index=False, header=False)
+        df.to_csv("Accounts.csv", mode="a", index=False, header=True)
 
 
 
@@ -149,7 +149,12 @@ def songguess(score):
                         break
 
         continue
+    return score
 
+def SortLeaderboard(lb):
+    reverse = None
+    lb.sort(reverse=True, key=lambda x: x[1])
+    return lb
 
 #Allows for choice of account creation through previous subprogram
 prelogin()
@@ -173,5 +178,18 @@ score = songguess(score)
 
 print("Thank you for playing! :) ")
 
-accountbase.loc[GetRow(Uname), 'score'] = score
-accountbase.to_csv('Accounts.csv', index=False, header=False)
+accountbase.loc[GetRow('Excal-rs'), 'score'] = score
+accountbase.to_csv('Accounts.csv', index=False)
+
+print("Are you on the leaderboard? \n")
+
+for count in range(len(accountbase.index)):
+    leaderboard = []
+    leaderboard = ((accountbase[['Username', 'score']]).values.tolist())
+
+
+df = pd.DataFrame(SortLeaderboard(leaderboard), columns=['Username', 'Score'])
+print(df)
+
+df.to_csv('Leaderboard.csv', index=False, header=True)
+
