@@ -64,33 +64,38 @@ def prelogin():
         prelogin()
 
 
-def Login(username, password):
+def Login():
+    username = str(input("Please enter account username: "))
+    password = str(input("Please enter account password: ")).encode("utf-8")
+
     accountbase = pd.read_csv("Accounts.csv")
     usernames = accountbase["Username"].tolist()
     #refreshes list incase a new user was created
 
-    for row in accountbase:
-        if username == row[0] and bcrypt.checkpw(password, (row[1]).encode("utf-8")):
-            print("You have succesfully logged in! \n")
-
-        elif username == row[0] and (bcrypt.checkpw(password, (row[1]).encode("utf-8"))) == False:
-            print("Incorrect username or password! Please try again! \n")
-            Uname = str(input("Please enter account username: "))
-            Passwd = str(input("Please enter account password: ")).encode("utf-8")
-            Login(Uname, Passwd)
-
-        elif username not in usernames:
+    while True:
+        if username not in usernames:
             print("That user does not exist! Do you want to create a new user?")
             x = input().lower()
             if x in ['y',"yes"]:
                 createUser()
 
-            elif x in ['','n','no']:
+            elif x not in ['y', 'yes']:
                 print("OK, Let's try again!")
-                Uname = str(input("Please enter account username: "))
-                Passwd = str(input("Please enter account password: ")).encode("utf-8")
 
-                Login(Uname, Passwd)
+                username = str(input("Please enter account username: "))
+                password = str(input("Please enter account password: ")).encode("utf-8")
+
+        elif username == accountbase.loc[GetRow(username), 'Username'] and bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")):
+            print("You have succesfully logged in! \n")
+            break
+
+        elif username == accountbase.loc[GetRow(username), 'Username'] and bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")) == False:
+            print("Incorrect username or password! Please try again! \n")
+            username = str(input("Please enter account username: "))
+            password = str(input("Please enter account password: ")).encode("utf-8")
+
+    return username
+
 
 
 # Fetches the index for row of user for future refrence e.g score
@@ -159,14 +164,10 @@ def SortLeaderboard(lb):
 #Allows for choice of account creation through previous subprogram
 prelogin()
 
-Uname = str(input("Please enter account username: "))
-Passwd = str(input("Please enter account password: ")).encode("utf-8")
-
-Login(Uname, Passwd)
-
+Uname = Login()
 
 accountbase = pd.read_csv("Accounts.csv")
-score = accountbase['score'].iloc[GetRow(Uname)]
+score = accountbase.loc[GetRow(Uname), 'score']
 
 
 # os.system('cls')
@@ -193,3 +194,5 @@ print(df)
 
 df.to_csv('Leaderboard.csv', index=False, header=True)
 
+
+input()
