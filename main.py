@@ -1,7 +1,3 @@
-<<<<<<< HEAD:song-guesser.py
-# Excal-rs Github
-
-=======
 #Excal-rs Github
 
 import random
@@ -212,9 +208,3 @@ print(df)
 df.to_csv('Leaderboard.csv', index=False, header=True)
 
 input()
-
-<<<<<<< HEAD:song-guesser.py
-# Github Excal-rs
-=======
-# Github Excal-rs
->>>>>>> 9815d59fd1dd32afb249ba6ff724aa2a84dba920:main.py
