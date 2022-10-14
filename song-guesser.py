@@ -1,12 +1,10 @@
-#Excal-rs Github
+# Excal-rs Github
 
-import getpass
-import random
 import bcrypt
 import os
 import pandas as pd
 
-# Create a list of all used usernames for later refrence
+# Create a list of all used usernames for later reference
 accountbase = pd.read_csv("Accounts.csv")
 usernames = accountbase["Username"].tolist()
 
@@ -26,6 +24,24 @@ class UserDetail:
         df.to_csv("Accounts.csv", mode="a", index=False, header=False)
 
 
+def prelogin():
+    choice = str(input("Do you already have an account? ")).lower()
+
+    while choice not in ['y', 'yes', 'no', 'n']:
+        choice = str(input(f"Sorry but \"{choice}\" is not a valid response, please try again! \n"
+                           f"Do you have an account? "))
+
+    if choice in ['n', 'no']:
+        createUser()
+
+    elif choice in ['y', 'yes', '']:
+        print("")
+
+    else:
+        print("Incorrect input Please try again")
+        prelogin()
+
+
 # Subprogram to create a new user if needed
 def createUser():
     print("\nOK! Let's make an account for you!")
@@ -34,44 +50,32 @@ def createUser():
     while username in usernames:
         username = str(input("Sorry, that username is already taken! \nPlease enter another username: "))
     # Ensures there are no duplicate usernames by checking all usernames in use
-
-    password = str(getpass("Please enter password: "))
-    # os.system('cls')  #only works on windows machines (cant test as I am using Arch)
-    passwordconf = str(input("Please confirm password: "))
-
-    while password != passwordconf:
-        # os.system('cls')
-        print("Sorry those passwords don't match! Try again. ")
+    if username not in usernames:
 
         password = str(input("Please enter password: "))
-        # os.system('cls')
-        passwordconf = str(getpass("Please confirm password: "))
+        # os.system('cls')  #only works on Windows machines (cant test as I am using Arch)
+        passwordconf = str(input("Please confirm password: "))
 
-    print("Thank you for making an account, you can now log in! \n")
-    UserDetail(username, password, 0)
-    Login()
+        while password != passwordconf:
+            # os.system('cls')
+            print("Sorry those passwords don't match! Try again. ")
 
-def prelogin():
-    choice = str(input("Do you already have an account? ")).lower()
-    while choice not in ['y', 'yes', 'no', 'n']:
-        choice = str(
-            input(f"Sorry but \"{choice}\" is not a valid response, please try again! \nDo you have an account? "))
-    if choice in ['n', 'no']:
-        createUser()
-    elif choice in ['y', 'yes', '']:
-        print("")
-    else:
-        print("Incorrect input Please try again")
-        prelogin()
+            password = str(input("Please enter password: "))
+            # os.system('cls')
+            passwordconf = str(input("Please confirm password: "))
+
+        print("Thank you for making an account, you can now log in! \n")
+        UserDetail(username, password, 0)
 
 
 def Login():
-    username = str(input("Please enter account username: "))
-    password = str(getpass("Please enter account password: ")).encode("utf-8")
 
     accountbase = pd.read_csv("Accounts.csv")
     usernames = accountbase["Username"].tolist()
-    #refreshes list incase a new user was created
+    # Updates usernames list to compesate for new user creation
+
+    username = str(input("Please enter account username: "))
+    password = str(input("Please enter account password: ")).encode("utf-8")
 
     while True:
         if username not in usernames:
@@ -79,28 +83,31 @@ def Login():
             x = input().lower()
             if x in ['y',"yes"]:
                 createUser()
-                accountbase = pd.read_csv("Accounts.csv")
-                usernames = accountbase["Username"].tolist()
+                Login()
                 break
             elif x not in ['y', 'yes']:
                 print("OK, Let's try again!")
 
                 username = str(input("Please enter account username: "))
-                password = str(getpass("Please enter account password: ")).encode("utf-8")
+                password = str(input("Please enter account password: ")).encode("utf-8")
 
-        elif username == accountbase.loc[GetRow(username), 'Username'] and bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")):
-            print("You have succesfully logged in! \n")
+        elif username == accountbase.loc[GetRow(username), 'Username'] and \
+                bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")):
+
+            print("You have successfully logged in! \n")
             break
 
-        elif username == accountbase.loc[GetRow(username), 'Username'] and bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")) == False:
+        elif username == accountbase.loc[GetRow(username), 'Username'] and \
+                bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")) == False:
+
             print("Incorrect username or password! Please try again! \n")
             username = str(input("Please enter account username: "))
-            password = str(getpass("Please enter account password: ")).encode("utf-8")
+            password = str(input("Please enter account password: ")).encode("utf-8")
 
     return username
 
 
-# Fetches the index for row of user for future refrence e.g score
+# Fetches the index for row of user for future reference e.g. score
 def GetRow(username):
     accountbase = pd.read_csv("Accounts.csv")
     index = accountbase.index[accountbase["Username"] == username].tolist()
@@ -128,11 +135,11 @@ def songguess(score):
 
         elif guess == song:
             score += 1
-            print(f"That is correct \nYoue score is now: {score} \n")
+            print(f"That is correct \nYour score is now: {score} \n")
             continue
 
         elif song != guess:
-            print("Incorrect! You have two more attemps before you lose a point!\n")
+            print("Incorrect! You have two more attempts before you lose a point!\n")
 
             for x in range(2):
                 guess = str(input(f"What song is {songinitial} - by {songbase.artist[i]}: "))
@@ -152,7 +159,7 @@ def songguess(score):
                 elif guess != song:
                     print("incorrect, one more try!")
                     continue
-                
+
                 elif guess != song:
                     print("incorrect, one more try!")
                     continue
@@ -162,7 +169,6 @@ def songguess(score):
 
 
 def SortLeaderboard(lb):
-    reverse = None
     lb.sort(reverse=True, key=lambda x: x[1])
     return lb
 
@@ -177,7 +183,7 @@ score = accountbase.loc[GetRow(Uname), 'score']
 
 # os.system('cls')
 
-print(f"Welcome to the song guesser game! Your score is currectly {score} !"
+print(f"Welcome to the song guesser game! Your score is currently {score} !"
       f" Lets try get it higher so u can be on the leaderboard")
 
 score = songguess(score)
@@ -198,4 +204,6 @@ print(df)
 
 df.to_csv('Leaderboard.csv', index=False, header=True)
 
-getpass()
+input()
+
+# GitHub Excal-rs
