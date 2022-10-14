@@ -1,5 +1,6 @@
 #Excal-rs Github
 
+import getpass
 import random
 import bcrypt
 import os
@@ -34,7 +35,7 @@ def createUser():
         username = str(input("Sorry, that username is already taken! \nPlease enter another username: "))
     # Ensures there are no duplicate usernames by checking all usernames in use
 
-    password = str(input("Please enter password: "))
+    password = str(getpass("Please enter password: "))
     # os.system('cls')  #only works on windows machines (cant test as I am using Arch)
     passwordconf = str(input("Please confirm password: "))
 
@@ -44,7 +45,7 @@ def createUser():
 
         password = str(input("Please enter password: "))
         # os.system('cls')
-        passwordconf = str(input("Please confirm password: "))
+        passwordconf = str(getpass("Please confirm password: "))
 
     print("Thank you for making an account, you can now log in! \n")
     UserDetail(username, password, 0)
@@ -66,7 +67,7 @@ def prelogin():
 
 def Login():
     username = str(input("Please enter account username: "))
-    password = str(input("Please enter account password: ")).encode("utf-8")
+    password = str(getpass("Please enter account password: ")).encode("utf-8")
 
     accountbase = pd.read_csv("Accounts.csv")
     usernames = accountbase["Username"].tolist()
@@ -85,7 +86,7 @@ def Login():
                 print("OK, Let's try again!")
 
                 username = str(input("Please enter account username: "))
-                password = str(input("Please enter account password: ")).encode("utf-8")
+                password = str(getpass("Please enter account password: ")).encode("utf-8")
 
         elif username == accountbase.loc[GetRow(username), 'Username'] and bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")):
             print("You have succesfully logged in! \n")
@@ -94,7 +95,7 @@ def Login():
         elif username == accountbase.loc[GetRow(username), 'Username'] and bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")) == False:
             print("Incorrect username or password! Please try again! \n")
             username = str(input("Please enter account username: "))
-            password = str(input("Please enter account password: ")).encode("utf-8")
+            password = str(getpass("Please enter account password: ")).encode("utf-8")
 
     return username
 
