@@ -1,7 +1,6 @@
 #Excal-rs Github
 
 import random
->>>>>>> 9815d59fd1dd32afb249ba6ff724aa2a84dba920:main.py
 import bcrypt
 import os
 import pandas as pd
@@ -140,11 +139,7 @@ def songguess(score):
                     score = score - 1
                     print(f"You have lost one point! Your score is now: {score}\n")
                     break
-<<<<<<< HEAD:song-guesser.py
 
-=======
-                
->>>>>>> 9815d59fd1dd32afb249ba6ff724aa2a84dba920:main.py
                 elif guess == "end now" and input("Are you sure? y/n") in ["yes", "y"]:
                     break
 
@@ -152,19 +147,14 @@ def songguess(score):
                     score += 1
                     print(f"That is correct \nYour score is now: {score} \n")
                     break
-<<<<<<< HEAD:song-guesser.py
 
                 elif guess != song:
                     print("incorrect, one more try!")
                     continue
-=======
                 
                 elif guess != song:
                     print("incorrect, one more try!")
                     continue
-
-                
->>>>>>> 9815d59fd1dd32afb249ba6ff724aa2a84dba920:main.py
 
         continue
     return score
