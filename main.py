@@ -198,4 +198,4 @@ print(df)
 
 df.to_csv('Leaderboard.csv', index=False, header=True)
 
-input()
+getpass()
