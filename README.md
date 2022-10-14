@@ -11,10 +11,11 @@ A small game to guess songs from their initials and artist also allows you to lo
 ### 1) Create an account: To create an account just start the script and when prompted if you have an account, enter **no**, enter username and password. To see taken usernames you can check the 'Accounts.csv' file if needed.
 <br />
 
-###2) Login: To login after creating your account just enter your details.
+### 2) Login: To login after creating your account just enter your details.
 <br />
 
-###3) Play: After loggging in you should be ready to play! Just guess the song from the song list and the artist list!
+### 3) Play: After loggging in you should be ready to play! Just guess the song from the song list and the artist list!
+<br />
 
 
 ## Skills I had to learn to make this project: <br />
