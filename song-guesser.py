@@ -3,6 +3,7 @@
 import bcrypt
 import os
 import pandas as pd
+import pwinput
 
 # Create a list of all used usernames for later reference
 accountbase = pd.read_csv("Accounts.csv")
@@ -52,17 +53,18 @@ def createUser():
     # Ensures there are no duplicate usernames by checking all usernames in use
     if username not in usernames:
 
-        password = str(input("Please enter password: "))
+        password = str(pwinput.pwinput(prompt='Please enter Password: ', mask='*'))
         # os.system('cls')  #only works on Windows machines (cant test as I am using Arch)
-        passwordconf = str(input("Please confirm password: "))
+        passwordconf = str(pwinput.pwinput(prompt='Please confirm Password: ', mask='*'))
 
         while password != passwordconf:
             # os.system('cls')
             print("Sorry those passwords don't match! Try again. ")
-
-            password = str(input("Please enter password: "))
-            # os.system('cls')
-            passwordconf = str(input("Please confirm password: "))
+            
+            password = str(pwinput.pwinput(prompt='Please enter Password: ', mask='*'))
+            # os.system('cls')  #only works on Windows machines (cant test as I am using Arch)
+            passwordconf = str(pwinput.pwinput(prompt='Please confirm Password: ', mask='*'))
+            
 
         print("Thank you for making an account, you can now log in! \n")
         UserDetail(username, password, 0)
@@ -75,7 +77,7 @@ def Login():
     # Updates usernames list to compesate for new user creation
 
     username = str(input("Please enter account username: "))
-    password = str(input("Please enter account password: ")).encode("utf-8")
+    password = str(pwinput.pwinput(prompt='Please enter Password: ', mask='*')).encode("utf-8")
 
     while True:
         if username not in usernames:
@@ -89,7 +91,7 @@ def Login():
                 print("OK, Let's try again!")
 
                 username = str(input("Please enter account username: "))
-                password = str(input("Please enter account password: ")).encode("utf-8")
+                password = str(pwinput.pwinput(prompt='Please enter Password: ', mask='*')).encode("utf-8")
 
         elif username == accountbase.loc[GetRow(username), 'Username'] and \
                 bcrypt.checkpw(password, (accountbase.loc[GetRow(username), 'password']).encode("utf-8")):
@@ -102,7 +104,7 @@ def Login():
 
             print("Incorrect username or password! Please try again! \n")
             username = str(input("Please enter account username: "))
-            password = str(input("Please enter account password: ")).encode("utf-8")
+            password = str(pwinput.pwinput(prompt='Please enter Password: ', mask='*')).encode("utf-8")
 
     return username
 
