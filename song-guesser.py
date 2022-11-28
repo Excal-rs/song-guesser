@@ -162,10 +162,6 @@ def songguess(score):
                     print("incorrect, one more try!")
                     continue
 
-                elif guess != song:
-                    print("incorrect, one more try!")
-                    continue
-
         continue
     return score
 
