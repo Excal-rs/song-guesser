@@ -23,3 +23,5 @@ A small game to guess songs from their initials and artist also allows you to lo
   Learning how to hash passwords and compare them using bcrypt <br />
   User Account creation <br />
   User login Authentication <br />
+#
+<br />Please note that the `songbase.csv` file was created using shazam top 100
